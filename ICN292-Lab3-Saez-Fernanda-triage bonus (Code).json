@@ -1,0 +1,87 @@
+{
+  "name": "Triage bonus (Code)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "triage-bonus",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "12d21165-44c8-4ea1-a66c-4f31f26bc772",
+      "name": "Webhook",
+      "webhookId": "0691d25c-ca1c-419e-ad8d-091b24bb0326"
+    },
+    {
+      "parameters": {
+        "jsCode": "const U = 72000;\nconst D = 7;\nconst b = $json.body;\n\nfunction clasificar(b) {\n  // Regla 2 - DATOS_INVALIDOS\n  if (b.id_solicitud == null || b.id_solicitud === \"\")\n    return { ruta: \"DATOS_INVALIDOS\", motivo: \"INVALIDO_CAMPO\" };\n  const monto = Number(b.monto);\n  const dias  = Number(b.dias_desde_compra);\n  if (!(monto > 0))\n    return { ruta: \"DATOS_INVALIDOS\", motivo: \"INVALIDO_MONTO\" };\n  // Regla 3 - RECHAZO (plazo antes que estado)\n  if (dias > D)\n    return { ruta: \"RECHAZO\", motivo: \"RECHAZO_PLAZO\" };\n  if (b.estado_producto === \"danado_por_uso\")\n    return { ruta: \"RECHAZO\", motivo: \"RECHAZO_ESTADO\" };\n  // Regla 4 - REVISION (monto antes que falla)\n  if (monto > U)\n    return { ruta: \"REVISION\", motivo: \"REVISION_MONTO\" };\n  if (b.estado_producto === \"con_fallas\")\n    return { ruta: \"REVISION\", motivo: \"REVISION_FALLA\" };\n  // Regla 5 - APROBACION (fallback)\n  return { ruta: \"APROBACION\", motivo: \"APROBACION\" };\n}\n\nconst r = clasificar(b);\nreturn [{ json: {\n  id_solicitud: b.id_solicitud,\n  sku: b.sku,\n  monto: Number(b.monto),\n  dias_desde_compra: Number(b.dias_desde_compra),\n  estado_producto: b.estado_producto,\n  ruta: r.ruta,\n  motivo: r.motivo,\n  U, D\n} }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "a91249e5-7f9d-4acb-820f-56126246b3c4",
+      "name": "Clasificar (Code)"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        432,
+        0
+      ],
+      "id": "26a90052-cace-4eaa-831a-c4bc55356329",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Clasificar (Code)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clasificar (Code)": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "f3e11c66-ea44-4985-a1fb-de2c96ce4d9d",
+  "meta": {
+    "instanceId": "1537336e8962e4af59b9f6527b3856adc0ca1037ec1e51b5e95bc43378e8120a"
+  },
+  "nodeGroups": [],
+  "id": "23sxYc6rte4B9jzc",
+  "tags": []
+}

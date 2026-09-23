@@ -1,0 +1,84 @@
+{
+  "name": "Emisor solicitudes",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6982d14a-2dea-4963-b026-1c0ac740dd09",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "const solicitudes = [\n  {\"id_solicitud\":\"DEV-1115\",\"sku\":\"AU-210\",\"monto\":\"19990\",\"dias_desde_compra\":\"3\",\"estado_producto\":\"sin_abrir\",\"email_cliente\":\"cliente1@example.cl\"},\n  {\"id_solicitud\":\"DEV-1116\",\"sku\":\"TE-330\",\"monto\":\"69980\",\"dias_desde_compra\":\"5\",\"estado_producto\":\"abierto_sin_uso\",\"email_cliente\":\"cliente2@example.cl\"},\n  {\"id_solicitud\":\"DEV-1117\",\"sku\":\"HV-050\",\"monto\":\"24990\",\"dias_desde_compra\":\"12\",\"estado_producto\":\"con_fallas\",\"email_cliente\":\"cliente3@example.cl\"},\n  {\"id_solicitud\":\"DEV-1118\",\"sku\":\"MW-150\",\"monto\":\"79990\",\"dias_desde_compra\":\"4\",\"estado_producto\":\"sin_abrir\",\"email_cliente\":\"cliente4@example.cl\"},\n  {\"id_solicitud\":\"DEV-1119\",\"sku\":\"PL-120\",\"monto\":\"45990\",\"dias_desde_compra\":\"25\",\"estado_producto\":\"danado_por_uso\",\"email_cliente\":\"cliente5@example.cl\"},\n  {\"id_solicitud\":\"DEV-1120\",\"sku\":\"AS-260\",\"monto\":\"89990\",\"dias_desde_compra\":\"2\",\"estado_producto\":\"con_fallas\",\"email_cliente\":\"cliente6@example.cl\"},\n  {\"id_solicitud\":\"DEV-1121\",\"sku\":\"LV-330\",\"monto\":\"289990\",\"dias_desde_compra\":\"9\",\"estado_producto\":\"sin_abrir\",\"email_cliente\":\"cliente7@example.cl\"},\n  {\"id_solicitud\":\"DEV-1122\",\"sku\":\"PL-120\",\"monto\":\"45990\",\"dias_desde_compra\":\"2\",\"estado_producto\":\"sin_abrir\",\"email_cliente\":\"cliente8@example.cl\"},\n  {\"id_solicitud\":\"DEV-1123\",\"sku\":\"AU-210\",\"monto\":\"39980\",\"dias_desde_compra\":\"15\",\"estado_producto\":\"danado_por_uso\",\"email_cliente\":\"cliente9@example.cl\"},\n  {\"id_solicitud\":\"DEV-1124\",\"sku\":\"HV-050\",\"monto\":\"49980\",\"dias_desde_compra\":\"1\",\"estado_producto\":\"abierto_sin_uso\",\"email_cliente\":\"cliente10@example.cl\"},\n  {\"id_solicitud\":\"DEV-1125\",\"sku\":\"TE-330\",\"monto\":\"34990\",\"dias_desde_compra\":\"22\",\"estado_producto\":\"sin_abrir\",\"email_cliente\":\"cliente11@example.cl\"},\n  {\"id_solicitud\":\"DEV-1126\",\"sku\":\"MW-150\",\"monto\":\"79990\",\"dias_desde_compra\":\"8\",\"estado_producto\":\"con_fallas\",\"email_cliente\":\"cliente12@example.cl\"},\n  {\"id_solicitud\":\"DEV-C01\",\"sku\":\"CB-010\",\"monto\":\"9990\",\"dias_desde_compra\":\"1\",\"estado_producto\":\"sin_abrir\",\"email_cliente\":\"control01@example.cl\"},\n  {\"id_solicitud\":\"DEV-C02\",\"sku\":\"LV-330\",\"monto\":\"289990\",\"dias_desde_compra\":\"2\",\"estado_producto\":\"sin_abrir\",\"email_cliente\":\"control02@example.cl\"},\n  {\"id_solicitud\":\"DEV-C03\",\"sku\":\"MW-150\",\"monto\":\"79990\",\"dias_desde_compra\":\"29\",\"estado_producto\":\"abierto_sin_uso\",\"email_cliente\":\"control03@example.cl\"}\n];\nreturn solicitudes.map(s => ({ json: s }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "6a0e4e46-43ee-49fc-9599-526d5aac3e92",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:5678/webhook/triage-devoluciones",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "378f2803-af87-4719-ab56-b526cd251891",
+      "name": "Enviar al triage"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Enviar al triage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "645d94ec-373f-416c-ac3a-6503ba7e362b",
+  "meta": {
+    "instanceId": "1537336e8962e4af59b9f6527b3856adc0ca1037ec1e51b5e95bc43378e8120a"
+  },
+  "nodeGroups": [],
+  "id": "b43yxG4UrDhVm8id",
+  "tags": []
+}

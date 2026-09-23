@@ -1,0 +1,185 @@
+{
+  "name": "Resumen diario",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 20
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "170c7f41-5a37-4af2-b0d0-aec6f27f2faa",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/Users/fernanda/.n8n/registro/*.json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "325859e5-ccaa-47ff-9c23-56612c7a5f4d",
+      "name": "Leer registros"
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "id": "af3a915a-f162-4bc9-9de6-c909a21d43d3",
+      "name": "Extraer JSON"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={{ $json.data }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        672,
+        0
+      ],
+      "id": "5c6c4ac3-8a68-459d-b79b-9ed08210e2e3",
+      "name": "Aplanar"
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "field": "id_solicitud"
+            },
+            {
+              "aggregation": "sum",
+              "field": "monto"
+            }
+          ]
+        },
+        "fieldsToSplitBy": "ruta",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        0
+      ],
+      "id": "115cf167-7735-44a4-8041-06e9c9bfa8e0",
+      "name": "Resumen por ruta"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2caaa742-06c4-4d32-8238-c830a07a8dad",
+              "name": "mensaje",
+              "value": "==Resumen diario AndesHogar\n{{ $input.all().map(i => i.json.ruta + ': ' + i.json.count_id_solicitud + ' solicitudes, monto $' + i.json.sum_monto).join('\\n') }}\nMonto total del día: ${{ $input.all().reduce((a,i) => a + i.json.sum_monto, 0) }}\nTasa de aprobación automática: {{ (($input.all().find(i => i.json.ruta === 'APROBACION')?.json.count_id_solicitud || 0) / $input.all().reduce((a,i) => a + i.json.count_id_solicitud, 0) * 100).toFixed(1) }}%",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1120,
+        0
+      ],
+      "id": "23a9d3fc-59ed-4c19-9d2a-90b9c9c2d890",
+      "name": "Mensaje del día"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Leer registros",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer registros": {
+      "main": [
+        [
+          {
+            "node": "Extraer JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer JSON": {
+      "main": [
+        [
+          {
+            "node": "Aplanar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aplanar": {
+      "main": [
+        [
+          {
+            "node": "Resumen por ruta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resumen por ruta": {
+      "main": [
+        [
+          {
+            "node": "Mensaje del día",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "eb007f5e-4844-438c-9f33-358838163407",
+  "meta": {
+    "instanceId": "1537336e8962e4af59b9f6527b3856adc0ca1037ec1e51b5e95bc43378e8120a"
+  },
+  "nodeGroups": [],
+  "id": "1e5Mm3fuIHzOhaWs",
+  "tags": []
+}
