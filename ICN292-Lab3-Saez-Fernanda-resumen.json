@@ -95,7 +95,7 @@
             {
               "id": "2caaa742-06c4-4d32-8238-c830a07a8dad",
               "name": "mensaje",
-              "value": "==Resumen diario AndesHogar\n{{ $input.all().map(i => i.json.ruta + ': ' + i.json.count_id_solicitud + ' solicitudes, monto $' + i.json.sum_monto).join('\\n') }}\nMonto total del día: ${{ $input.all().reduce((a,i) => a + i.json.sum_monto, 0) }}\nTasa de aprobación automática: {{ (($input.all().find(i => i.json.ruta === 'APROBACION')?.json.count_id_solicitud || 0) / $input.all().reduce((a,i) => a + i.json.count_id_solicitud, 0) * 100).toFixed(1) }}%",
+              "value": "=Resumen diario AndesHogar\n{{ $input.all().map(i => i.json.ruta + ': ' + i.json.count_id_solicitud + ' solicitudes, monto $' + i.json.sum_monto).join('\\n') }}\nMonto total del día: ${{ $input.all().reduce((a,i) => a + i.json.sum_monto, 0) }}\nTasa de aprobación automática: {{ (($input.all().find(i => i.json.ruta === 'APROBACION')?.json.count_id_solicitud || 0) / $input.all().reduce((a,i) => a + i.json.count_id_solicitud, 0) * 100).toFixed(1) }}%",
               "type": "string"
             }
           ]
@@ -109,7 +109,33 @@
         0
       ],
       "id": "23a9d3fc-59ed-4c19-9d2a-90b9c9c2d890",
-      "name": "Mensaje del día"
+      "name": "Mensaje del día",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "fromEmail": "fernanasaez9456@gmail.com",
+        "toEmail": "fernandasaez9456@gmail.com",
+        "subject": "Resumen diario AndesHogar",
+        "emailFormat": "text",
+        "text": "={{ $json.mensaje }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1344,
+        0
+      ],
+      "id": "1de35915-ca92-4e8a-ad53-73839a79d386",
+      "name": "Send an Email",
+      "webhookId": "8c8e9b35-9402-4d2d-afda-862b96387b00",
+      "credentials": {
+        "smtp": {
+          "id": "JNETXuA1ZAu657Ql",
+          "name": "SMTP account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -168,6 +194,17 @@
           }
         ]
       ]
+    },
+    "Mensaje del día": {
+      "main": [
+        [
+          {
+            "node": "Send an Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -175,8 +212,9 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "eb007f5e-4844-438c-9f33-358838163407",
+  "versionId": "ac33d141-2815-48aa-975e-008793647a43",
   "meta": {
+    "templateCredsSetupCompleted": true,
     "instanceId": "1537336e8962e4af59b9f6527b3856adc0ca1037ec1e51b5e95bc43378e8120a"
   },
   "nodeGroups": [],
