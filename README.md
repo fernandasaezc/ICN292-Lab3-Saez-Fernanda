@@ -28,3 +28,4 @@ Este repositorio contiene el desarrollo del Laboratorio 3 del curso ICN292: un p
 
 **Notas:**
 - El resumen lee todos los archivos de la carpeta de registros; para reproducir los resultados del informe, la carpeta debe contener solo los registros de las 15 solicitudes.
+- El workflow bonus (`ICN292-Lab3-Saez-Fernanda-bonus.json`) tiene su propio webhook. Para probarlo, se debe importar, publicar y enviar las solicitudes a `http://localhost:5678/webhook/triage-bonus`, cambiando la URL en el nodo HTTP Request del emisor.
