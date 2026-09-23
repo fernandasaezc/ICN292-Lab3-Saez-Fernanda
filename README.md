@@ -14,7 +14,7 @@ Este repositorio contiene el desarrollo del Laboratorio 3 del curso ICN292: un p
 - `ICN292-Lab3-Saez-Fernanda-emisor.json` — Workflow que envía las 15 solicitudes
 - `ICN292-Lab3-Saez-Fernanda-resumen.json` — Workflow de resumen diario
 - `ICN292-Lab3-Saez-Fernanda-bonus.json` — Versión alternativa del triage con un nodo Code (bonus)
-- `/capturas` — Capturas de ejecuciones exitosas y fallidas
+- `/capturas` — Capturas de todas las ejecuciones incluidas en el informe
 
 ## Cómo reproducir los workflows
 1. Iniciar n8n en local habilitando el acceso a archivos (necesario para guardar y leer los registros):
