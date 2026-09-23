@@ -27,5 +27,4 @@ Este repositorio contiene el desarrollo del Laboratorio 3 del curso ICN292: un p
 7. Ejecutar el workflow de resumen manualmente o esperar su ejecución programada (20:00 h).
 
 **Notas:**
-- El nodo *Consultar UF* requiere conexión a internet (API pública `mindicador.cl`).
 - El resumen lee todos los archivos de la carpeta de registros; para reproducir los resultados del informe, la carpeta debe contener solo los registros de las 15 solicitudes.
