@@ -1,7 +1,7 @@
 # ICN292 - Laboratorio 3: MVP de triage de devoluciones en n8n
 
 **Nombre:** Fernanda Sáez Cabrera
-**Semilla S:** 92 (U = $72.000, D = 7 días)
+**Semilla S:** 092 (U = $72.000, D = 7 días)
 **Fecha:** 23 de septiembre de 2026
 
 ## Descripción
