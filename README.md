@@ -21,7 +21,7 @@ Este repositorio contiene el desarrollo del Laboratorio 3 del curso ICN292: un p
    `N8N_BLOCK_FILE_ACCESS_TO_N8N_FILES=false N8N_RESTRICT_FILE_ACCESS_TO="" npx n8n`
 2. Abrir `http://localhost:5678` en el navegador.
 3. Importar cada `.json` desde el menú del workflow → *Import from File*.
-4. **Ajustar la ruta de registros:** en el nodo *Guardar registro* (triage) y en *Leer registros* (resumen), reemplazar `/Users/fernanda/.n8n/registro/` por una carpeta existente en el equipo.
+4. Ajustar la ruta de registros: en el nodo *Guardar registro* (triage) y en *Leer registros* (resumen), reemplazar `/Users/fernanda/.n8n/registro/` por una carpeta existente en el equipo.
 5. Publicar el workflow de triage (*Publish*) para habilitar la URL de producción `http://localhost:5678/webhook/triage-devoluciones`.
 6. Ejecutar el workflow emisor, que ya apunta a esa URL y envía las 15 solicitudes.
 7. Ejecutar el workflow de resumen manualmente o esperar su ejecución programada (20:00 h).
